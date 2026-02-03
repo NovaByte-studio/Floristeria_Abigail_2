@@ -246,3 +246,54 @@ document.addEventListener('DOMContentLoaded', function() {
     // Ya está implementado en el HTML como enlace directo
     console.log('Todas las funcionalidades se han inicializado correctamente');
 });
+
+// ===== MODAL DE IMÁGENES (PANTALLA COMPLETA) =====
+const imageModal = document.getElementById('imageModal');
+const modalImage = document.getElementById('modalImage');
+const modalClose = document.getElementById('modalClose');
+const modalProductName = document.getElementById('modalProductName');
+const modalProductPrice = document.getElementById('modalProductPrice');
+
+// Agregar evento click a todas las imágenes de productos
+const productImages = document.querySelectorAll('.product-image');
+
+productImages.forEach(imageContainer => {
+    imageContainer.addEventListener('click', function() {
+        const img = this.querySelector('img');
+        const productCard = this.closest('.product-card');
+        const productName = productCard.querySelector('.product-name').textContent;
+        const productPrice = productCard.querySelector('.product-price').textContent;
+        
+        // Establecer imagen y datos en el modal
+        modalImage.src = img.src;
+        modalImage.alt = img.alt;
+        modalProductName.textContent = productName;
+        modalProductPrice.textContent = productPrice;
+        
+        // Mostrar modal
+        imageModal.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevenir scroll
+    });
+});
+
+// Cerrar modal al hacer clic en el botón X
+modalClose.addEventListener('click', function() {
+    imageModal.classList.remove('active');
+    document.body.style.overflow = 'auto'; // Restaurar scroll
+});
+
+// Cerrar modal al hacer clic fuera de la imagen
+imageModal.addEventListener('click', function(e) {
+    if (e.target === imageModal) {
+        imageModal.classList.remove('active');
+        document.body.style.overflow = 'auto'; // Restaurar scroll
+    }
+});
+
+// Cerrar modal con la tecla ESC
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && imageModal.classList.contains('active')) {
+        imageModal.classList.remove('active');
+        document.body.style.overflow = 'auto'; // Restaurar scroll
+    }
+});
